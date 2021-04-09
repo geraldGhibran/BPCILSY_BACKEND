@@ -1,6 +1,9 @@
 env.DOCKER_REGISTRY = 'vanillavladimir'
 env.DOCKER_IMAGE_NAME = 'backend-prod'
 node('master') {
+    stage('Clean Workspace') {
+      cleanWs()
+    }
     stage('Git Pull from Github') {
         sh "git clone https://github.com/geraldGhibran/BPCILSY_BACKEND.git"
     }
