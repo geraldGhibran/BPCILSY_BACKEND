@@ -70,3 +70,5 @@ app.use('/todos', todoRoutes);
 app.listen(PORT, function() {
     console.log("Server is running on Port: " + PORT);
 });
+
+console.log("hello world");
