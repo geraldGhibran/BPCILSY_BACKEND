@@ -8,15 +8,15 @@ node('master') {
         sh "git clone https://github.com/geraldGhibran/BPCILSY_BACKEND.git"
     }
     stage('Build Docker Image') {
-        sh "cd /var/lib/jenkins/BPCILSY/mern-todo-app/backend/ && docker build --build-arg APP_NAME=backend-prod -t $DOCKER_REGISTRY/$DOCKER_IMAGE_NAME:${BUILD_NUMBER} ."   
+        sh "cd BPCILSY_BACKEND/ && docker build --build-arg APP_NAME=backend-prod -t $DOCKER_REGISTRY/$DOCKER_IMAGE_NAME:${BUILD_NUMBER} ."   
     }
     stage('Push Docker Image to Dockerhub') {
         sh "docker push $DOCKER_REGISTRY/$DOCKER_IMAGE_NAME:${BUILD_NUMBER}"
     }
     stage('DeployTo Kubernetes Cluster') {
-        sh'''cd /var/lib/jenkins/BPCILSY/mern-todo-app/ && sed -i "15d" backend-deployment-prod.yml'''
-        sh'''cd /var/lib/jenkins/BPCILSY/mern-todo-app/ && sed -i "14 a \'\\'          image: vanillavladimir/$DOCKER_IMAGE_NAME:${BUILD_NUMBER}" backend-deployment-prod.yml && sed -i "s/''//" backend-deployment-prod.yml'''
-        sh "cd /var/lib/jenkins/BPCILSY/mern-todo-app/ && kubectl replace -f backend-deployment-prod.yml -n backend-prod --force"
+        sh'''cd BPCILSY_BACKEND/ && sed -i "15d" backend-deployment-prod.yml'''
+        sh'''cd BPCILSY_BACKEND/ && sed -i "14 a \'\\'          image: vanillavladimir/$DOCKER_IMAGE_NAME:${BUILD_NUMBER}" backend-deployment-prod.yml && sed -i "s/''//" backend-deployment-prod.yml'''
+        sh "cd BPCILSY_BACKEND/ && kubectl replace -f backend-deployment-prod.yml -n backend-prod --force"
    }
     stage('Remove Docker Image') {
         sh "docker rmi $DOCKER_REGISTRY/$DOCKER_IMAGE_NAME:${BUILD_NUMBER}"   
