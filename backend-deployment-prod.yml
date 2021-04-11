@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: server-deployment-backend-prod
+  namespace: backend-prod
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: backend-prod
+    spec:
+      containers:
+        - name: backend-prod
+          image: vanillavladimir/backend-prod:5
+          ports:
+            - containerPort: 4000
+              name: nodejs-port
+  selector:
+    matchLabels:
+      app: backend-prod
